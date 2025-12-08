@@ -1,3 +1,5 @@
+The project contains approximately 1,980 lines of Java source code inside the src directory.
+
 # Inventory & Billing System (Java No-DB)
 
 A complete, persistent Inventory and Billing system built in Java without a database. It features a modern **Swing Desktop GUI**, uses **JSON files** for local storage, and implements a comprehensive set of **GoF Design Patterns** (Focus on Creational & Structural).
