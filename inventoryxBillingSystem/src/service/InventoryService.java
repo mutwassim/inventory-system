@@ -30,27 +30,30 @@ public class InventoryService {
 
     public List<Product> searchProducts(String query) {
         return productRepository.findAll().stream()
-                .filter(p -> p.getName().toLowerCase().contains(query.toLowerCase()) 
-                          || p.getCategoryName().toLowerCase().contains(query.toLowerCase()))
+                .filter(p -> p.getName().toLowerCase().contains(query.toLowerCase())
+                        || p.getCategoryName().toLowerCase().contains(query.toLowerCase()))
                 .collect(Collectors.toList());
     }
-    
+
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
-    
+
     public void deductStock(String productId, int quantity) {
         Product p = getProduct(productId);
         if (p != null) {
             if (p.getStockQuantity() >= quantity) {
                 p.setStockQuantity(p.getStockQuantity() - quantity);
+                util.Logger.getInstance().info("Deducting stock for " + p.getName() + ": "
+                        + (p.getStockQuantity() + quantity) + " -> " + p.getStockQuantity());
                 updateProduct(p);
             } else {
+                util.Logger.getInstance().error("Insufficient stock for product: " + p.getName());
                 throw new IllegalArgumentException("Insufficient stock for product: " + p.getName());
             }
         }
     }
-    
+
     public List<Product> getLowStockProducts(int threshold) {
         return productRepository.findAll().stream()
                 .filter(p -> p.getStockQuantity() <= threshold)
